@@ -85,8 +85,8 @@ describe Node do
   end
 
   it 'delegates methods to actions based on name' do
-    show_action.should_receive(:run).with()
-    subject.show
+    show_action.should_receive(:run).with(calendarId)
+    subject.show(calendarId)
   end
 
   it 'raises error if no action was found' do
