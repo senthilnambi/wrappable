@@ -1,5 +1,5 @@
-require_relative 'wrappable/version.rb'
-require_relative 'wrappable/finder.rb'
+require_relative 'wrappable/version'
+require_relative 'wrappable/finder'
 
 module Wrappable
   def app
