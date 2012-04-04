@@ -78,7 +78,7 @@ describe Node do
   let(:show_action)  { mock(:name => :show)  }
 
   subject do
-    node = Node.new(:calendars, nil)
+    node = described_class.new(:calendars, nil)
     node.actions << dummy_action << show_action
 
     node
@@ -86,7 +86,7 @@ describe Node do
 
   it 'delegates methods to actions based on name' do
     show_action.should_receive(:run).with()
-    subject.show()
+    subject.show
   end
 
   it 'raises error if no action was found' do

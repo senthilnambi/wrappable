@@ -32,11 +32,6 @@ module Wrappable
 
     private
 
-    def method_missing(name, *args, &blk)
-      existing_node = find_node(name)
-      existing_node ? existing_node : super
-    end
-
     def current_node_scope(node)
       scope(:current_node, node) do
         yield
@@ -48,6 +43,11 @@ module Wrappable
       yield
     ensure
       instance_variable_set("@#{name}", nil)
+    end
+
+    def method_missing(name, *args, &blk)
+      existing_node = find_node(name)
+      existing_node ? existing_node : super
     end
 
     def find_node(name)
@@ -63,6 +63,8 @@ module Wrappable
       @parent = parent
       @actions = []
     end
+
+    private
 
     def method_missing(name, *args, &blk)
       action = find_action(name)
