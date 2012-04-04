@@ -72,4 +72,27 @@ describe App do
     nodes.find { |node| node.name == name }
   end
 end
+
+describe Node do
+  let(:dummy_action) { mock(:name => :dummy) }
+  let(:show_action)  { mock(:name => :show)  }
+
+  subject do
+    node = Node.new(:calendars, nil)
+    node.actions << dummy_action << show_action
+
+    node
+  end
+
+  it 'delegates methods to actions based on name' do
+    show_action.should_receive(:run).with()
+    subject.show()
+  end
+
+  it 'raises error if no action was found' do
+    expect do
+      subject.index
+    end.to raise_error(NoMethodError)
+  end
+end
 end

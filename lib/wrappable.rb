@@ -56,11 +56,21 @@ module Wrappable
   end
 
   class Node
-    attr_reader :name, :parent
+    attr_reader :name, :parent, :actions
 
     def initialize(name, parent)
       @name = name
       @parent = parent
+      @actions = []
+    end
+
+    def method_missing(name, *args, &blk)
+      action = find_action(name)
+      action ? action.run(*args, &blk) : super
+    end
+
+    def find_action(name)
+      actions.find {|action| action.name == name }
     end
   end
 end
