@@ -65,6 +65,17 @@ module Wrappable
       @actions = []
     end
 
+    def parent_names
+      current_node = self
+      array = [] << current_node.name
+      while current_node.parent
+        array << current_node.parent.name
+        current_node = current_node.parent
+      end
+
+      array.reverse
+    end
+
     private
 
     def method_missing(name, *args, &blk)
