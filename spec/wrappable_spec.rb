@@ -14,8 +14,6 @@ module Wrappable; describe Wrappable do
     Wrappable::App.any_instance.should_receive(:node)
     subject
   end
-
-  it 'delegates constants to App'
 end
 
 describe App do
@@ -30,6 +28,10 @@ describe App do
 
   it 'allows endpoint getters/setters' do
     subject.endpoint.should == 'google'
+  end
+
+  it 'defines getter for node' do
+    subject.calendars.should be_a(Node)
   end
 end
 end

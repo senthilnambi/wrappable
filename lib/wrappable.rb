@@ -23,7 +23,12 @@ module Wrappable
 
     def node(name)
       current_node = Node.new(name, nil)
-      @nodes << current_node
+      nodes << current_node
+    end
+
+    def method_missing(name, *args, &blk)
+      existing_node = nodes.find {|node| node.name == name }
+      existing_node ? existing_node : super
     end
   end
 
