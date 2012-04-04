@@ -76,10 +76,9 @@ describe Node do
   let(:show_action)  { mock(:name => :show)  }
 
   subject do
-    node = described_class.new(:calendars, nil)
-    node.actions << dummy_action << show_action
-
-    node
+    described_class.new(:calendars, nil).tap do |node|
+      node.actions << dummy_action << show_action
+    end
   end
 
   it 'delegates methods to actions based on name' do
