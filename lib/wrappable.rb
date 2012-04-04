@@ -9,11 +9,9 @@ module Wrappable
     app.send(name, *args, &blk)
   end
 
-  def self.const_missing(name)
-    App.const_get(name)
-  end
-
   class App
+    attr_reader :nodes
+
     def initialize
       @nodes = []
     end
@@ -24,11 +22,17 @@ module Wrappable
     end
 
     def node(name)
-      current_node = Node.new
-      self.class.const_set(name.to_s.capitalize, current_node)
+      current_node = Node.new(name, nil)
+      @nodes << current_node
     end
   end
 
   class Node
+    attr_reader :name
+
+    def initialize(name, parent)
+      @name = name
+      @parent = parent
+    end
   end
 end

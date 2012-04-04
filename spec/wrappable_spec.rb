@@ -31,9 +31,5 @@ describe App do
   it 'allows endpoint getters/setters' do
     subject.endpoint.should == 'google'
   end
-
-  it 'sets constant to newly created node' do
-    Calendars.should be_a(Node)
-  end
 end
 end
