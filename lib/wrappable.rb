@@ -1,4 +1,5 @@
 require_relative 'wrappable/version.rb'
+require_relative 'wrappable/finder.rb'
 
 module Wrappable
   def app
@@ -10,6 +11,8 @@ module Wrappable
   end
 
   class App
+    include Finder
+
     attr_reader :nodes
 
     def initialize
@@ -46,16 +49,14 @@ module Wrappable
     end
 
     def method_missing(name, *args, &blk)
-      existing_node = find_node(name)
+      existing_node = find_in_array(nodes, name)
       existing_node ? existing_node : super
-    end
-
-    def find_node(name)
-      nodes.find {|node| node.name == name }
     end
   end
 
   class Node
+    include Finder
+
     attr_reader :name, :parent, :actions
 
     def initialize(name, parent)
@@ -67,12 +68,8 @@ module Wrappable
     private
 
     def method_missing(name, *args, &blk)
-      action = find_action(name)
+      action = find_in_array(actions, name)
       action ? action.run(*args, &blk) : super
-    end
-
-    def find_action(name)
-      actions.find {|action| action.name == name }
     end
   end
 end

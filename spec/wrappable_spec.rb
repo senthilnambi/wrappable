@@ -17,6 +17,8 @@ module Wrappable; describe Wrappable do
 end
 
 describe App do
+  include Wrappable::Finder
+
   subject do
     Module.new do
       extend Wrappable
@@ -56,20 +58,16 @@ describe App do
     end
 
     it 'remembers parent node' do
-      acl = find_node(subject.nodes, :acl)
-      cal = find_node(subject.nodes, :calendars)
+      acl = find_in_array(subject.nodes, :acl)
+      cal = find_in_array(subject.nodes, :calendars)
 
       acl.parent.should == cal
     end
 
     it 'does not affect non-nested nodes' do
-      events = find_node(subject.nodes, :events)
+      events = find_in_array(subject.nodes, :events)
       events.parent.should == nil
     end
-  end
-
-  def find_node(nodes, name)
-    nodes.find { |node| node.name == name }
   end
 end
 
