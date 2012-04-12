@@ -1,4 +1,6 @@
 module Wrappable
+  # why have app class at all? prevents @nodes, @path etc. from
+  # polluting namespace of class adding this module
   class App
     include Finder
 
@@ -13,12 +15,39 @@ module Wrappable
       @endpoint
     end
 
+    def access_token(token=nil)
+      @access_token = token if token
+      @access_token
+    end
+
     def node(name)
       current_node = Node.new(name, @current_node)
       nodes << current_node
 
       current_node_scope(current_node) do
         yield if block_given?
+
+        # belongs in node dsl, but methods should be available in app
+        # move to Node? feels like top down design
+        member_scope do
+          get :show
+          put :update
+          patch :patch
+          delete :delete
+        end
+
+        collection_scope do
+          get :index
+          post :create
+        end
+      end
+    end
+
+    def member_scope
+      member_path = MemberPath.new(@current_node, action, ids, endpoint
+                                   access_token)
+      scope(:path, member_path) do
+        yield
       end
     end
 

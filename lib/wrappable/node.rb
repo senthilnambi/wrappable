@@ -21,6 +21,17 @@ module Wrappable
       array.reverse
     end
 
+    # sep. from scoping stuff
+    def get(name)
+      request(name, :get)
+    end
+
+    #same for put, delete, post, patch
+
+    def request(name, verb)
+      @actions << Action.new(name, verb, @path)
+    end
+
     private
 
     def method_missing(name, *args, &blk)
